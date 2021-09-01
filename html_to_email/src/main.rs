@@ -1,35 +1,47 @@
-use std::fs::read_to_string;
-use anyhow::{Context, Result};
-use log::{debug, info, warn, error, trace};
+use std::error::Error;
 
-// use structopt::StructOpt;
-// #[derive(StructOpt)]
-// struct CommandLine {
-//     pattern: String,
-//     path: std::path::PathBuf,
-// }
+use clap::{App, Arg, ArgMatches};
+use log::{info, error, LevelFilter};
+
+use html_to_email::cmd::HtmlToEmail;
+
+fn args() -> ArgMatches<'static> {
+    App::new("myApp")
+        .version("1.0")
+        .author("igonejack@gmail.com")
+        .about("tool for testing")
+        .args(&[
+            Arg::from_usage("-c, --config=[FILE] 'set config file path'").default_value(""),
+            Arg::from_usage("-v, --verbose 'verbose printing'"),
+            Arg::with_name("input").multiple(true)
+        ])
+        .get_matches()
+}
+
+fn conv(html: String) -> Result<(), Box<dyn Error>> {
+    HtmlToEmail::new(html).run()
+}
 
 fn main() {
-    env_logger::init();
+    env_logger::builder()
+        .filter_level(LevelFilter::Info)
+        .init();
 
-    trace!("this is trace");
-    debug!("this is debug");
-    info!("this is info");
-    warn!("this is warning");
-    error!("this is error");
+    let args = args();
+    let htms = args.values_of("input").unwrap_or(Default::default());
 
-    let content = read().unwrap();
-    for line in content.lines() {
-        println!("{}", line);
+    if htms.to_owned().count() == 0 {
+        error!("not html given");
+        return;
+    }
+
+    for htm in htms {
+        info!("process {}", htm);
+
+        let res = conv(htm.to_string());
+        if res.is_err() {
+            error!("parse {} failed: {}", htm, res.err().unwrap());
+        }
     }
 }
 
-fn read() -> Result<String> {
-    let path = "test.txt";
-
-    let content = read_to_string(path).context(format!("could not read {}", path))?;
-
-    println!("file content: {}", content);
-
-    Ok(content)
-}

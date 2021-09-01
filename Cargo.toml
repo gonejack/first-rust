@@ -8,3 +8,6 @@ edition = "2018"
 
 [dependencies]
 ferris-says = "0.2"
+structopt = "0.3.13"
+anyhow = "1.0"
+clap = "2.33.3"
