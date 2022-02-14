@@ -67,7 +67,18 @@ dependencies = [
  "anyhow",
  "clap",
  "ferris-says",
+ "getopts",
  "structopt",
+ "switch_statement",
+]
+
+[[package]]
+name = "getopts"
+version = "0.2.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "14dbbfd5c71d70241ecf9e6f13737f7b5ce823821063188d7e46c41d371eebd5"
+dependencies = [
+ "unicode-width",
 ]
 
 [[package]]
@@ -183,6 +194,12 @@ dependencies = [
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "switch_statement"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c836b2ec4343af14b5b3dd741e9fd083af682ca64d88437273e9da00a13a1f80"
 
 [[package]]
 name = "syn"

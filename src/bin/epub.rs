@@ -9,7 +9,6 @@ use epub_builder::ReferenceType;
 use epub_builder::Result;
 use epub_builder::TocElement;
 use epub_builder::ZipLibrary;
-
 use log::{debug, error, info, trace, warn};
 
 fn main() {
